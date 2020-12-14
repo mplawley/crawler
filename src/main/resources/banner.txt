@@ -1,0 +1,9 @@
+
+,--.             ,--. ,--.    ,--. ,--.   ,--.
+|  |-.  ,--.,--. `--' |  |  ,-|  | `--' ,-'  '-.
+| .-. ' |  ||  | ,--. |  | ' .-. | ,--. '-.  .-'
+| `-' | '  ''  ' |  | |  | \ `-' | |  |   |  |
+ `---'   `----'  `--' `--'  `---'  `--'   `--'
+
+${AnsiColor.BRIGHT_BLUE}:: Mark Lawley, using Sping Boot, Angular, SQL, Hibernate, Angular CLI, and JHipster 🤓🤓🤓  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.jhipster.tech ::${AnsiColor.DEFAULT}
