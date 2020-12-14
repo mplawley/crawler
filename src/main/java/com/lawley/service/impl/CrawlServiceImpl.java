@@ -1,14 +1,12 @@
 package com.lawley.service.impl;
 
-import com.lawley.service.CrawlService;
 import com.lawley.domain.Crawl;
 import com.lawley.repository.CrawlRepository;
+import com.lawley.service.CrawlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

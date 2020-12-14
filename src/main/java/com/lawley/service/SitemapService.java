@@ -1,5 +1,5 @@
 package com.lawley.service;
 
 public interface SitemapService {
-    String crawlSite(String url);
+    void crawlSite(String url) throws Exception;
 }

@@ -1,12 +1,11 @@
 package com.lawley.web.rest;
 
 import com.lawley.domain.Crawl;
+import com.lawley.service.CrawlQueryService;
 import com.lawley.service.CrawlService;
 import com.lawley.service.SitemapService;
-import com.lawley.web.rest.errors.BadRequestAlertException;
 import com.lawley.service.dto.CrawlCriteria;
-import com.lawley.service.CrawlQueryService;
-
+import com.lawley.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -16,10 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -61,13 +59,12 @@ public class CrawlResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/crawls")
-    public ResponseEntity<Crawl> createCrawl(@Valid @RequestBody Crawl crawl) throws URISyntaxException {
+    public ResponseEntity<Crawl> createCrawl(@Valid @RequestBody Crawl crawl) throws Exception {
         log.debug("REST request to save Crawl : {}", crawl);
         if (crawl.getId() != null) {
             throw new BadRequestAlertException("A new crawl cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        String crawlResult = sitemapService.crawlSite(crawl.getUrl());
-        crawl.setResult(crawlResult);
+        sitemapService.crawlSite(crawl.getUrl());
         Crawl result = crawlService.save(crawl);
         return ResponseEntity.created(new URI("/api/crawls/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))

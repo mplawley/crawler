@@ -3,14 +3,11 @@ package com.lawley.web.rest;
 import com.lawley.CrawlerApp;
 import com.lawley.domain.Crawl;
 import com.lawley.repository.CrawlRepository;
+import com.lawley.service.CrawlQueryService;
 import com.lawley.service.CrawlService;
 import com.lawley.service.SitemapService;
-import com.lawley.service.dto.CrawlCriteria;
-import com.lawley.service.CrawlQueryService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,13 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -104,7 +101,7 @@ public class CrawlResourceIT {
     @Transactional
     public void createCrawl() throws Exception {
         int databaseSizeBeforeCreate = crawlRepository.findAll().size();
-        when(sitemapService.crawlSite(DEFAULT_URL)).thenReturn(DEFAULT_RESULT);
+//        when(sitemapService.crawlSite(DEFAULT_URL)).thenReturn(DEFAULT_RESULT);
 
         // Create the Crawl
         restCrawlMockMvc.perform(post("/api/crawls")
