@@ -4,14 +4,17 @@ import com.lawley.CrawlerApp;
 import com.lawley.domain.Crawl;
 import com.lawley.repository.CrawlRepository;
 import com.lawley.service.CrawlService;
+import com.lawley.service.SitemapService;
 import com.lawley.service.dto.CrawlCriteria;
 import com.lawley.service.CrawlQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,7 +25,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,7 +45,7 @@ public class CrawlResourceIT {
     private static final String DEFAULT_URL = "AAAAAAAAAA";
     private static final String UPDATED_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_RESULT = "AAAAAAAAAA";
+    private static final String DEFAULT_RESULT = "XML sitemap result of crawl";
     private static final String UPDATED_RESULT = "BBBBBBBBBB";
 
     @Autowired
@@ -57,6 +62,9 @@ public class CrawlResourceIT {
 
     @Autowired
     private MockMvc restCrawlMockMvc;
+
+    @MockBean
+    private SitemapService sitemapService;
 
     private Crawl crawl;
 
@@ -96,6 +104,8 @@ public class CrawlResourceIT {
     @Transactional
     public void createCrawl() throws Exception {
         int databaseSizeBeforeCreate = crawlRepository.findAll().size();
+        when(sitemapService.crawlSite(DEFAULT_URL)).thenReturn(DEFAULT_RESULT);
+
         // Create the Crawl
         restCrawlMockMvc.perform(post("/api/crawls")
             .contentType(MediaType.APPLICATION_JSON)

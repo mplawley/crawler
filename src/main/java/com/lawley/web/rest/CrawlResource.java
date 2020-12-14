@@ -2,6 +2,7 @@ package com.lawley.web.rest;
 
 import com.lawley.domain.Crawl;
 import com.lawley.service.CrawlService;
+import com.lawley.service.SitemapService;
 import com.lawley.web.rest.errors.BadRequestAlertException;
 import com.lawley.service.dto.CrawlCriteria;
 import com.lawley.service.CrawlQueryService;
@@ -44,9 +45,12 @@ public class CrawlResource {
 
     private final CrawlQueryService crawlQueryService;
 
-    public CrawlResource(CrawlService crawlService, CrawlQueryService crawlQueryService) {
+    private final SitemapService sitemapService;
+
+    public CrawlResource(CrawlService crawlService, CrawlQueryService crawlQueryService, SitemapService sitemapService) {
         this.crawlService = crawlService;
         this.crawlQueryService = crawlQueryService;
+        this.sitemapService = sitemapService;
     }
 
     /**
@@ -62,6 +66,8 @@ public class CrawlResource {
         if (crawl.getId() != null) {
             throw new BadRequestAlertException("A new crawl cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        String crawlResult = sitemapService.crawlSite(crawl.getUrl());
+        crawl.setResult(crawlResult);
         Crawl result = crawlService.save(crawl);
         return ResponseEntity.created(new URI("/api/crawls/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
