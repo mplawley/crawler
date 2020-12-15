@@ -12,18 +12,30 @@ import java.io.File;
 
 @Service
 public class SitemapServiceImpl implements SitemapService {
+    private static final String USER_AGENT_ID = "com.lawley.sitecrawler";
+    private static final String CRAWL_STORAGE = "src/main/resources/crawler4j";
+
     @Override
     public void crawlSite(String url) throws Exception {
-        File crawlStorage = new File("src/test/resources/crawler4j");
-        CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder(crawlStorage.getAbsolutePath());
-        int numCrawlers = 12;
+        CrawlConfig config = configureCrawler();
+        int numCrawlers = 6;
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-        RobotstxtServer robotstxtServer= new RobotstxtServer(robotstxtConfig, pageFetcher);
+        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
         controller.addSeed(url);
-        CrawlController.WebCrawlerFactory<HtmlCrawler> factory = HtmlCrawler::new;
+        CrawlController.WebCrawlerFactory<HtmlCrawler> factory = () -> new HtmlCrawler(url);
         controller.start(factory, numCrawlers);
+    }
+
+    private CrawlConfig configureCrawler() {
+        File crawlStorage = new File(CRAWL_STORAGE);
+        CrawlConfig config = new CrawlConfig();
+        config.setCrawlStorageFolder(crawlStorage.getAbsolutePath());
+        config.setMaxDepthOfCrawling(6);
+        config.setPolitenessDelay(300);
+        config.setUserAgentString(USER_AGENT_ID);
+        config.setIncludeBinaryContentInCrawling(true);
+        return config;
     }
 }
