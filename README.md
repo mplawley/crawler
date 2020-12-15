@@ -88,6 +88,23 @@ Then run:
 docker-compose -f src/main/docker/app.yml up -d
 ```
 
+## Future directions
+
+The highest priority for next steps:
+
+A. Make crawling async on the server and allow the client to poll the server for the completion of a crawl. To do this:
+
+0. Have the CrawlController POST endpoint assign a jobID based on unique username, a timestamp, and a randomly generated UUID.
+   This method will return this jobID to the front-end. The jobID is put on a queue.
+1. Annotate `SitemapServiceImpl`'s `crawlSite()` method with `Async` and make it return void.
+2. Have Angular's `crawl-update-component.ts` receive the jobID once a crawl request is made.
+3. If further requests are made from the same user within a configurable time limit (getting the user from the SecurityContext), do
+   not allow this user to add another jobID to the queue.
+4. Otherwise, the user can poll the server for the existence of the jobID in the queue.
+5. Once the crawl is done, the polling will reveal that the jobID no longer exists in the queue. The front-end can then notify
+   the user that the job is done. An email can also be sent using the `MailService` to the user's email, which is required
+   at registration.
+
 ## Tech stack
 
-Java Spring boot, Angular, MySQL, Hibernate, Angular CLI, Spring Initializr, JHipster.
+Java Spring boot, Angular, MySQL, Hibernate, Crawler4j, Angular CLI, Spring Initializr, JHipster.
