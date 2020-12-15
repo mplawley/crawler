@@ -2,6 +2,8 @@
 
 Crawl a site and create a sitemap.
 
+[Link to Demo](https://youtu.be/70L3ynS5lDU)
+
 ## Installation
 
 To install the project:
@@ -59,6 +61,12 @@ Front-end unit tests:
 
 ```
 npm test
+```
+
+Front-end e2e tests:
+
+```
+npm run e2e
 ```
 
 ## Docker
