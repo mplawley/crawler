@@ -1,5 +1,6 @@
 package com.lawley.service.impl;
 
+import com.lawley.domain.Crawl;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -11,17 +12,17 @@ import java.util.regex.Pattern;
 public class HtmlCrawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|mp4|zip|gz))$");
-    private final String rootUrl;
+    private final Crawl crawl;
 
-    public HtmlCrawler(String rootUrl) {
-        this.rootUrl = rootUrl;
+    public HtmlCrawler(Crawl crawl) {
+        this.crawl = crawl;
     }
 
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches()
-            && href.startsWith(this.rootUrl);
+            && href.startsWith(this.crawl.getUrl());
     }
 
     /**
@@ -30,18 +31,27 @@ public class HtmlCrawler extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-        String url = page.getWebURL().getURL();
-        logger.info("URL: " + url);
-
         if (page.getParseData() instanceof HtmlParseData) {
-            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            String text = htmlParseData.getText();
-            String html = htmlParseData.getHtml();
-            Set<WebURL> links = htmlParseData.getOutgoingUrls();
-
-            logger.info("Text length: " + text.length());
-            logger.info("Html length: " + html.length());
-            logger.info("Number of outgoing links: " + links.size());
+            String currentResult = crawl.getResult();
+            currentResult += extractPageAndStats(page);
+            crawl.setResult(currentResult);
         }
+    }
+
+    private String extractPageAndStats(Page page) {
+        HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+        String text = htmlParseData.getText();
+        String html = htmlParseData.getHtml();
+        Set<WebURL> links = htmlParseData.getOutgoingUrls();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("URL: ").append(page.getWebURL().getURL())
+            .append("Text length: ").append(text.length()).append("\n")
+            .append("Html length: ").append("\n")
+            .append(html.length())
+            .append("Number of outgoing links: ").append("\n")
+            .append(links.size())
+            .append("============\n");
+        return sb.toString();
     }
 }

@@ -1,5 +1,7 @@
 package com.lawley.service;
 
+import com.lawley.domain.Crawl;
+
 public interface SitemapService {
-    void crawlSite(String url) throws Exception;
+    Crawl crawlSite(Crawl crawl) throws Exception;
 }

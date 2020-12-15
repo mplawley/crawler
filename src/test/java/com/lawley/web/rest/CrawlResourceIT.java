@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -101,7 +102,7 @@ public class CrawlResourceIT {
     @Transactional
     public void createCrawl() throws Exception {
         int databaseSizeBeforeCreate = crawlRepository.findAll().size();
-//        when(sitemapService.crawlSite(DEFAULT_URL)).thenReturn(DEFAULT_RESULT);
+        when(sitemapService.crawlSite(any())).thenReturn(crawl);
 
         // Create the Crawl
         restCrawlMockMvc.perform(post("/api/crawls")

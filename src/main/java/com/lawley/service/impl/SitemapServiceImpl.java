@@ -1,5 +1,6 @@
 package com.lawley.service.impl;
 
+import com.lawley.domain.Crawl;
 import com.lawley.service.SitemapService;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -16,24 +17,25 @@ public class SitemapServiceImpl implements SitemapService {
     private static final String CRAWL_STORAGE = "src/main/resources/crawler4j";
 
     @Override
-    public void crawlSite(String url) throws Exception {
+    public Crawl crawlSite(Crawl crawl) throws Exception {
         CrawlConfig config = configureCrawler();
-        int numCrawlers = 6;
+        int numCrawlers = 12;
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
-        controller.addSeed(url);
-        CrawlController.WebCrawlerFactory<HtmlCrawler> factory = () -> new HtmlCrawler(url);
+        controller.addSeed(crawl.getUrl());
+        CrawlController.WebCrawlerFactory<HtmlCrawler> factory = () -> new HtmlCrawler(crawl);
         controller.start(factory, numCrawlers);
+        return crawl;
     }
 
     private CrawlConfig configureCrawler() {
         File crawlStorage = new File(CRAWL_STORAGE);
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorage.getAbsolutePath());
-        config.setMaxDepthOfCrawling(6);
-        config.setPolitenessDelay(300);
+        config.setMaxDepthOfCrawling(16);
+        config.setMaxPagesToFetch(1000);
         config.setUserAgentString(USER_AGENT_ID);
         config.setIncludeBinaryContentInCrawling(true);
         return config;

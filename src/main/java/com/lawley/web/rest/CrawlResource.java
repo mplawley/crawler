@@ -64,7 +64,7 @@ public class CrawlResource {
         if (crawl.getId() != null) {
             throw new BadRequestAlertException("A new crawl cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        sitemapService.crawlSite(crawl.getUrl());
+        crawl = sitemapService.crawlSite(crawl);
         Crawl result = crawlService.save(crawl);
         return ResponseEntity.created(new URI("/api/crawls/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))

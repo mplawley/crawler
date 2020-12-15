@@ -94,16 +94,24 @@ The highest priority for next steps:
 
 A. Make crawling async on the server and allow the client to poll the server for the completion of a crawl. To do this:
 
-0. Have the CrawlController POST endpoint assign a jobID based on unique username, a timestamp, and a randomly generated UUID.
-   This method will return this jobID to the front-end. The jobID is put on a queue.
-1. Annotate `SitemapServiceImpl`'s `crawlSite()` method with `Async` and make it return void.
-2. Have Angular's `crawl-update-component.ts` receive the jobID once a crawl request is made.
-3. If further requests are made from the same user within a configurable time limit (getting the user from the SecurityContext), do
-   not allow this user to add another jobID to the queue.
-4. Otherwise, the user can poll the server for the existence of the jobID in the queue.
-5. Once the crawl is done, the polling will reveal that the jobID no longer exists in the queue. The front-end can then notify
-   the user that the job is done. An email can also be sent using the `MailService` to the user's email, which is required
-   at registration.
+- Have the CrawlController POST endpoint assign a jobID based on unique username, a timestamp, and a randomly generated UUID.
+  This method will return this jobID to the front-end. The jobID is put on a queue.
+- Annotate `SitemapServiceImpl`'s `crawlSite()` method with `Async` and make it return void.
+- Have Angular's `crawl-update-component.ts` receive the jobID once a crawl request is made.
+- If further requests are made from the same user within a configurable time limit (getting the user from the SecurityContext), do
+  not allow this user to add another jobID to the queue.
+- Otherwise, the user can poll the server for the existence of the jobID in the queue.
+- Once the crawl is done, the polling will reveal that the jobID no longer exists in the queue. The front-end can then notify
+  the user that the job is done. An email can also be sent using the `MailService` to the user's email, which is required
+  at registration.
+
+B. Create an AWS Adapter to persist csv files created during crawling. To do this:
+
+- In addition to stats that can be simply persisted to the database, it is always nice to have
+  cloud storage for convenient viewing of csv files and for quick access to data for any analytical needs.
+- AWS Adapter as injectable service + interface for s3Object.put, S3Object.delete, s3Object.get.
+- Upon completion of a crawl, s3Object.put for the csv's of statistics.
+- Then write to a meta data table the return of the s3Object.put. This is a path to where the csv is saved.
 
 ## Tech stack
 
