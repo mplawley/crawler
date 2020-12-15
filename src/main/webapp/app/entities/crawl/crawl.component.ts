@@ -115,8 +115,4 @@ export class CrawlComponent implements OnInit, OnDestroy {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
-
-  getSummaryOfResult(crawlResult: string): string {
-    return crawlResult.substring(0, 100);
-  }
 }
