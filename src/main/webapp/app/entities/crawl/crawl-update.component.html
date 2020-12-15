@@ -49,6 +49,12 @@
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
+
+                <br>
+
+                <div *ngIf="isSaving">
+                    <span class="spinner-border"></span>
+                </div>
             </div>
         </form>
     </div>

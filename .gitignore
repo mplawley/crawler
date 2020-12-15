@@ -146,3 +146,8 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+######################
+# Crawler4j
+######################
+src/main/resources/crawler4j/frontier
