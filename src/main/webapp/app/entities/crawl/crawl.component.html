@@ -34,7 +34,7 @@
                     <td><a [routerLink]="['/crawl', crawl.id, 'view']">{{ crawl.id }}</a></td>
                     <td>{{ crawl.time | date:'medium' }}</td>
                     <td>{{ crawl.url }}</td>
-                    <td>{{ crawl.result }}</td>
+                    <td>{{ getSummaryOfResult(crawl.result) }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

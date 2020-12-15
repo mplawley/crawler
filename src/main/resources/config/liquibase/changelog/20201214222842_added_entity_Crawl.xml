@@ -22,7 +22,7 @@
             <column name="url" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="result" type="varchar(10000)">
+            <column name="result" type="varchar(55000)">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

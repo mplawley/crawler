@@ -21,7 +21,7 @@ describe('Crawl e2e test', () => {
   });
 
   it('should load Crawls', async () => {
-    await navBarPage.goToEntity('crawl');
+    await navBarPage.clickEntityDirectly('crawl');
     crawlComponentsPage = new CrawlComponentsPage();
     await browser.wait(ec.visibilityOf(crawlComponentsPage.title), 5000);
     expect(await crawlComponentsPage.getTitle()).to.eq('Crawls');

@@ -35,6 +35,7 @@ public class SitemapServiceImpl implements SitemapService {
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorage.getAbsolutePath());
         config.setMaxDepthOfCrawling(16);
+        config.setPolitenessDelay(200);
         config.setMaxPagesToFetch(1000);
         config.setUserAgentString(USER_AGENT_ID);
         config.setIncludeBinaryContentInCrawling(true);

@@ -10,7 +10,7 @@
             <dl class="row-md jh-entity-details">
                 <dt><span>Time</span></dt>
                 <dd>
-                    <span>{{ crawl.time }}</span>
+                    <span>{{ crawl.time | date: 'full'}}</span>
                 </dd>
                 <dt><span>Url</span></dt>
                 <dd>
@@ -18,7 +18,9 @@
                 </dd>
                 <dt><span>Result</span></dt>
                 <dd>
-                    <span>{{ crawl.result }}</span>
+                    <div *ngIf="crawl.result">
+                        <span [innerHTML]="formatCrawlResult()"></span>
+                    </div>
                 </dd>
             </dl>
 

@@ -39,19 +39,20 @@ public class HtmlCrawler extends WebCrawler {
     }
 
     private String extractPageAndStats(Page page) {
+        String url = page.getWebURL().getURL();
         HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
         String text = htmlParseData.getText();
         String html = htmlParseData.getHtml();
         Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("URL: ").append(page.getWebURL().getURL())
+        sb
+            .append("URL: ").append("<a href=").append(url).append(">").append(url).append("</a>").append("\n")
             .append("Text length: ").append(text.length()).append("\n")
-            .append("Html length: ").append("\n")
-            .append(html.length())
-            .append("Number of outgoing links: ").append("\n")
-            .append(links.size())
+            .append("Html length: ").append(html.length()).append("\n")
+            .append("Number of outgoing links: ").append(links.size()).append("\n")
             .append("============\n");
+        logger.info(sb.toString());
         return sb.toString();
     }
 }

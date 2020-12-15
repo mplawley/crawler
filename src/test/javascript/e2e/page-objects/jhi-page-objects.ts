@@ -80,6 +80,10 @@ export class NavBarPage {
     await this.clickOnEntity(entityName);
   }
 
+  async clickEntityDirectly(entityName: string): Promise<void> {
+    await this.clickOnEntity(entityName);
+  }
+
   async goToSignInPage(): Promise<void> {
     await this.clickOnAccountMenu();
     await this.clickOnSignIn();

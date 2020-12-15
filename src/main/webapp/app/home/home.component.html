@@ -6,14 +6,18 @@
     <div class="col-md-9">
         <h1 class="display-4">Site crawler</h1>
 
-        <p class="lead">Build an XML sitemap</p>
+        <p class="lead">Get site stats and map</p>
 
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span id="home-logged-message" *ngIf="account">You are logged in as user "{{ account.login }}".</span>
+            <div *ngSwitchCase="true">
+                <div class="alert alert-success" *ngSwitchCase="true">
+                    <span id="home-logged-message" *ngIf="account">You are logged in as user "{{ account.login }}".</span>
+                </div>
+                <br>
+                <a class="big-link" [routerLink]="['/crawl', 'new']">New Crawl</a>
+                <br>
+                <a class="big-link" [routerLink]="['/crawl']">Crawl results</a>
             </div>
-            <br>
-            <a class="big-link" [routerLink]="['/crawl', 'new']">New Crawl</a>
 
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span>Login with the default accounts: </span>

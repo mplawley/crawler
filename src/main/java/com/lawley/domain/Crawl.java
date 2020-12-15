@@ -31,7 +31,7 @@ public class Crawl implements Serializable {
     @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "result")
+    @Column(name = "result", length = 55000)
     private String result;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

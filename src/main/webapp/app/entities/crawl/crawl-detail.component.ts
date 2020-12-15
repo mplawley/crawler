@@ -19,4 +19,12 @@ export class CrawlDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  formatCrawlResult(): string {
+    if (this.crawl && this.crawl.result) {
+      return `${this.crawl.result.replace(/============/g, '<br>')}`;
+    } else {
+      return '';
+    }
+  }
 }
